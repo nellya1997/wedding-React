@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap');
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url("../font/gilroy-regular.woff2") format("woff2"),
+    url("../font/gilroy-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url("../font/gilroy-medium.ttf") format("ttf"),
+    url("../font/gilroy-medium.woff2") format("woff2"),
+    url("../font/gilroy-medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: 'Gilroy';
+  /* Соответствует значению "почти" bold )) */
+  src:
+    url("../font/gilroy-semibold.woff2") format("woff2"),
+    url("../font/gilroy-semibold.woff") format("woff");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vibes';
+  src:
+    url("../font/vibes.ttf") format("ttf"),
+    url("../font/vibes.woff2") format("woff2"),
+    url("../font/vibes.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: $font-main;
+  font-weight: 400;
+  //FS изначально 20 - менять теперь нельзя, делаю в rem и em
+  font-size: calc(20px + 15 * ((100vw - 375px) / 1920));
+  min-width: 320px;
+}
+
+body {
+  max-width: 100vw;
+  min-width: 320px;
+  color: $text-color;
+  background-image: url('../img/background.png');
+}
+
+main {
+  @include centry(80%);
+}
+
+.stop-scroll {
+  overflow: hidden;
+}
+
+button {
+  padding: 0;
+  border: none;
+}
+
+h1 {
+  font-family: $font-accent;
+  @include fonty(1.5rem, 400, 2rem);
+  color: $title-color;
+  padding: 0.7em 0;
+}
+
+.h2 {
+  font-family: $font-accent;
+  @include fonty(1.5rem, 400, 2rem);
+  color: $title-color;
+  padding: 0.5em 0;
+}

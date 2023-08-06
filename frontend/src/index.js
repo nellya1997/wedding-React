@@ -1,4 +1,5 @@
-import './scss/app.scss';
+import './scss/style.scss';
+// import './utilities/index.js';
 import ReactDOM from 'react-dom/client';
 import init from './init.jsx';
 

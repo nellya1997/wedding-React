@@ -1,19 +1,20 @@
-.transition {
-  transition: 0.5s;
-}
+@import "bootstrap/scss/bootstrap";
+@import "react-toastify/dist/ReactToastify.min.css";
+@import "animate.css/animate.min.css";
 
-.anim-show {
-	opacity: 0;
-	transition: 1s;
-	animation: show 1s 1;
-  animation-fill-mode: forwards;
-}
+//general
+@import "normalize.scss";
+@import "variables.scss";
+@import "mixins.scss";
+@import "general.scss";
 
-.vertical-align {
-  vertical-align: -.2em;
-}
 
-@keyframes show {
- 0% { opacity: 0; }
- 100% { opacity: 1; }
-}
+//blocks & sections
+@import "./blocks/header";
+@import "./blocks/second";
+@import "./blocks/programm";
+@import "./blocks/dress-code";
+@import "./blocks/flowers";
+@import "./blocks/form";
+@import "./blocks/spin";
+@import "./blocks/footer";

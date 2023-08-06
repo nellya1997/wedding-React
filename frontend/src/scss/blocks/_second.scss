@@ -1,0 +1,41 @@
+.second {
+    text-align: center;
+    padding: 1em 0;
+
+    &__subtitle {
+        font-family: $font-accent;
+        @include fonty(1.05rem, 400, 1.5rem);
+
+        span {
+            color: $title-color;
+        }
+    }
+
+    &__text {
+        @include fonty(0.8rem, 400, 1rem);
+    }
+
+    &__sub-text {
+        @include fonty(0.8rem, 400, 1rem);
+    }
+
+    & img {
+        width: 40px;
+        height: 40px;
+        margin: 0.5em auto;
+        //I'm not sure it is right way to code like that:
+        margin-bottom: 0em;
+    }
+
+    &__h3 {
+        font-family: $font-accent;
+        @include fonty(1.25rem, 400, 1.65rem);
+        color: $title-color;
+        padding: 0.5em 0;
+    }
+
+    &__timer {
+        @include fonty(1rem, 600, 1.2rem);
+    }
+
+}

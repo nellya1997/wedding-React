@@ -1,0 +1,8 @@
+.flowers {
+    text-align: center;
+
+    p {
+        @include fonty(0.8rem, 400, 1rem);
+        padding-bottom: 1em;
+    }
+}

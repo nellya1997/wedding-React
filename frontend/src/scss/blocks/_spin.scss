@@ -1,0 +1,41 @@
+.spin__text {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    color: black;
+    font-size: 14px;
+    user-select: none;
+    pointer-events: none;
+    animation: animate 20s linear infinite;
+
+    @keyframes animate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    span {
+        position: absolute;
+        top: -60px;
+        display: inline-block;
+        transform-origin: 0 60px;
+
+        &:first-child,
+        &:nth-child(13) {
+            color: red;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: red;
+            margin-top: 5px;
+        }
+
+        &:nth-child(13) {
+            margin-top: -5px;
+        }
+    }
+}

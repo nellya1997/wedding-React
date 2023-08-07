@@ -49,15 +49,17 @@ const App = () => {
         <BrowserRouter>
           <ToastContainer />
           <Header />
-          <Second />
-          <Programm />
-          <DressCode />
-          <Flowers />
+          <main>
+            <Second />
+            <Programm />
+            <DressCode />
+            <Flowers />
 
-          <Routes>
-            <Route path="/" element={<FormSubmit isMobile={isMobile} />} />
-            <Route path="/list" element={<List isMobile={isMobile} />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<FormSubmit isMobile={isMobile} />} />
+              <Route path="/list" element={<List isMobile={isMobile} />} />
+            </Routes>
+          </main>
 
           <Footer />
         </BrowserRouter>

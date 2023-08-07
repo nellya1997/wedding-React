@@ -6,7 +6,7 @@ const Header = () => (
       <img src="./img/content1.jpg" alt="" />
     </picture>
     <p className="header__content">
-      У нас
+      У нас&ensp;
       <span>
         хорошая
         <br />

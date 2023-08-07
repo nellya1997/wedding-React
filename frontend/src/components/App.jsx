@@ -9,7 +9,9 @@ import List from './List.jsx';
 import { actions } from '../slices/dataSlice.js';
 import ApiContext from './Context.jsx';
 // тут ваши импорты
+
 import Header from './Header.jsx';
+// import Main from './Main.jsx';
 import Second from './Second.jsx';
 import Programm from './Programm.jsx';
 import DressCode from './DressCode.jsx';
@@ -24,16 +26,16 @@ const App = () => {
     (param, arg) => {
       socket.emit(param, arg);
     },
-    [socket]
+    [socket],
   );
   const socketApi = useMemo(
     () => ({
       addLike: (like) => socketConnect('addLike', like),
       removeLike: (like) => socketConnect('removeLike', like),
       addData: (data) => socketConnect('addData', data),
-      removeData: (data) => socketConnect('removeData', data)
+      removeData: (data) => socketConnect('removeData', data),
     }),
-    [socketConnect]
+    [socketConnect],
   );
 
   socket.on('addLike', (data) => store.dispatch(actions.addLike(data)));
@@ -56,6 +58,7 @@ const App = () => {
             <Route path="/" element={<FormSubmit isMobile={isMobile} />} />
             <Route path="/list" element={<List isMobile={isMobile} />} />
           </Routes>
+
           <Footer />
         </BrowserRouter>
       </ApiContext.Provider>

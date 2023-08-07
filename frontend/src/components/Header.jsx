@@ -14,7 +14,7 @@ const Header = () => (
       </span>
     </p>
     <a href="#form" className="header__twister">
-      <img src="./img/heart.png" alt="" />
+      <img srcSet="./img/heart.png" alt="" />
       <p className="spin__text">&#173;подтвердите&#173;присутствие</p>
     </a>
   </header>

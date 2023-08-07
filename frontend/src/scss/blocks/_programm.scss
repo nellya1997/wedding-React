@@ -1,64 +1,63 @@
 .programm {
-    text-align: center;
-    padding: 0.8em 0;
+  text-align: center;
+  padding: 0.8em 0;
 
-    &__h3 {
-        font-family: $font-accent;
-        @include fonty(1.5rem, 400, 2rem);
-        color: $title-color;
+  &__h3 {
+    font-family: $font-accent;
+    @include fonty(1.5rem, 400, 2rem);
+    color: $title-color;
+    padding: 0.5em 0;
+  }
+
+  &__subtitle {
+    @include fonty(1rem, 600, 1.2rem);
+    padding: 0.3em 0;
+  }
+
+  &__text {
+    @include fonty(0.9rem, 400, 1.1rem);
+    padding: 0.75em 0;
+
+    p {
+      &:nth-child(2) {
+        @include fonty(0.7rem, 400, 0.85rem);
         padding: 0.5em 0;
+      }
+    }
+  }
+
+  picture {
+    display: inline-block;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .where-to {
+    @include fonty(0.8rem, 500, 1rem);
+    color: $text-color;
+    @include flexy(row, center, flex-start);
+    gap: 5px;
+    padding: 0.7em 0;
+
+    &:hover {
+      transform: scale(1.2);
+      transition: 0.4s ease-in-out;
     }
 
-    &__subtitle {
-        @include fonty(1rem, 600, 1.2rem);
-        padding: 0.3em 0;
+    &:active {
+      position: relative;
+      top: 3px;
     }
+  }
 
-    &__text {
-        @include fonty(0.9rem, 400, 1.1rem);
-        padding: 0.75em 0;
-
-        p {
-            &:nth-child(2) {
-                @include fonty(0.7rem, 400, 0.85rem);
-                padding: 0.5em 0;
-            }
-        }
+  //придется написать такой дебильный костыль т.к. я хз почему текст не умещается по-нормальному как в макете
+  .eleven-thirty {
+    .programm__text {
+      @include centry(90%);
     }
-
-    picture {
-        display: inline-block;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    }
-
-    .where-to {
-        @include fonty(0.8rem, 500, 1rem);
-        color: $text-color;
-        @include flexy(row);
-        gap: 5px;
-        padding: 0.7em 0;
-
-        &:hover {
-            transform: scale(1.2);
-            transition: 0.4s ease-in-out;
-        }
-
-        &:active {
-            position: relative;
-            top: 3px;
-        }
-    }
-
-    //придется написать такой дебильный костыль т.к. я хз почему текст не умещается по-нормальному как в макете
-    .eleven-thirty {
-        .programm__text {
-            @include centry(90%);
-        }
-    }
-
+  }
 }

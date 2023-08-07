@@ -1,7 +1,7 @@
 const Second = () => (
   <section className="second">
     <p className="second__subtitle">
-      <span>Дорогие</span>
+      <span>Дорогие </span>
       друзья и&nbsp;родные!!
     </p>
     <h1>Наша свадьба</h1>

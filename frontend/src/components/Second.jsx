@@ -1,3 +1,5 @@
+import Timer from './Timer';
+
 const Second = () => (
   <section className="second">
     <p className="second__subtitle">
@@ -15,7 +17,7 @@ const Second = () => (
       Уделите несколько минут, чтобы узнать все тонкости мероприятия.
     </p>
     <h3 className="second__h3">Осталось:</h3>
-    <p className="second__timer" />
+    <Timer date={new Date('September 30 2023 11:00:00 GMT+04:00')} />
   </section>
 );
 

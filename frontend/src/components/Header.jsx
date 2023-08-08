@@ -1,5 +1,10 @@
 const Header = () => {
-  const headerSpiner = (text) => text.split('').map((letter, i) => (<span key={letter} style={{ transform: `rotate(${i * 15}deg)` }}>{letter}</span>));
+  const headerSpiner = (text) =>
+    text.split('').map((letter, i) => (
+      <span key={letter} style={{ transform: `rotate(${i * 15}deg)` }}>
+        {letter}
+      </span>
+    ));
   return (
     <header className="header">
       <picture>

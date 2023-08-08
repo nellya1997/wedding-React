@@ -11,7 +11,6 @@ import ApiContext from './Context.jsx';
 // тут ваши импорты
 
 import Header from './Header.jsx';
-// import Main from './Main.jsx';
 import Second from './Second.jsx';
 import Programm from './Programm.jsx';
 import DressCode from './DressCode.jsx';
@@ -22,21 +21,14 @@ const App = () => {
   const isMobile = window.screen.width <= 768;
 
   const socket = io();
-  const socketConnect = useCallback(
-    (param, arg) => {
-      socket.emit(param, arg);
-    },
-    [socket],
-  );
-  const socketApi = useMemo(
-    () => ({
-      addLike: (like) => socketConnect('addLike', like),
-      removeLike: (like) => socketConnect('removeLike', like),
-      addData: (data) => socketConnect('addData', data),
-      removeData: (data) => socketConnect('removeData', data),
-    }),
-    [socketConnect],
-  );
+  const socketConnect = useCallback((param, arg) => socket.emit(param, arg), [socket]);
+
+  const socketApi = useMemo(() => ({
+    addLike: (like) => socketConnect('addLike', like),
+    removeLike: (like) => socketConnect('removeLike', like),
+    addData: (data) => socketConnect('addData', data),
+    removeData: (data) => socketConnect('removeData', data),
+  }), [socketConnect]);
 
   socket.on('addLike', (data) => store.dispatch(actions.addLike(data)));
   socket.on('removeLike', (data) => store.dispatch(actions.removeLike(data)));
@@ -60,7 +52,6 @@ const App = () => {
               <Route path="/list" element={<List isMobile={isMobile} />} />
             </Routes>
           </main>
-
           <Footer />
         </BrowserRouter>
       </ApiContext.Provider>

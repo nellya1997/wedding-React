@@ -1,35 +1,32 @@
 export default {
   translation: {
-    title: 'Приглашаем вас на свадьбу!',
     form: {
-      title: 'Для записи заполните анкету:',
-      name: 'Имя',
-      phone: 'Телефон',
+      title: 'Подвердите свое присутствие',
+      sub_title: 'Ответ будем ждать до 15.09',
+      people_count: 'Количество человек',
+      name: 'Имя и фамилия',
       submit: 'Отправить',
-      foods: {
-        title: 'Предпочтения по еде:',
-        meat: 'Мясо',
-        fish: 'Рыба',
-        vegetables: 'Овощи',
+      drinks: {
+        title: 'Какие напитки предпочитаете?',
+        champagne: 'Шампанское',
+        vodka: 'Водка',
+        white_wine: 'Белое вино',
+        whiskey: 'Виски',
+        red_wine: 'Красное вино',
+        cognac: 'Коньяк',
       },
-      alcohol: {
-        title: 'Предпочтения по алкоголю',
-        strong: 'Крепкий алкоголь',
-        wine: 'Вино',
-        beer: 'Пиво',
-      },
-      transfer: {
-        title: 'Нужен ли Вам трансфер?',
+      allergy: {
+        title: 'Есть ли аллергия?',
+        sub_title: 'Напишите нам, на что именно',
         yes: 'Да',
         no: 'Нет',
+      },
+      foods: {
+        title: 'Что не любите кушать?',
+        example: 'Например, рыба',
       },
       children: {
-        title: 'Будут ли с Вами дети?',
-        yes: 'Да',
-        no: 'Нет',
-      },
-      beds: {
-        title: 'Нужна ли вам двухспальная кровать?',
+        title: 'С вами будут дети?',
         yes: 'Да',
         no: 'Нет',
       },
@@ -63,7 +60,6 @@ export default {
     validation: {
       required: 'Обязательное поле',
       requirements: 'От 3 до 20 символов',
-      phone: 'Введите корректный номер телефона',
     },
     timer: {
       count_days_zero: '{{count}} дней, ',

@@ -8,7 +8,6 @@ setLocale({
   string: {
     min: () => ('validation.requirements'),
     max: () => ('validation.requirements'),
-    length: () => ('validation.phone'),
   },
 });
 
@@ -19,10 +18,19 @@ export default () => yup.object().shape({
     .required()
     .min(3)
     .max(20),
-  phone: yup
+  children: yup
+    .string()
+    .nonNullable('Выберете один вариант'),
+  drinks: yup
+    .array()
+    .min(1, 'Необходимо выбрать минимум один вариант'),
+  allergy: yup
+    .string()
+    .nonNullable('Выберете один вариант'),
+  subAllergy: yup
     .string()
     .trim()
     .required()
-    .transform((value) => value.replace(/[^\d]/g, ''))
-    .length(11),
+    .min(3)
+    .max(30),
 });

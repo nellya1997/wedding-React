@@ -107,7 +107,7 @@ const FormSubmit = () => {
           </Form.Control.Feedback>
         </FloatingLabel>
         <p className="mb-3 title text-muted">{t('form.people_count')}</p>
-        <div className={cn('d-flex justify-content-between align-items-center gap-4 col-6 position-relative', {
+        <div className={cn('d-flex col-lg-4 justify-content-between align-items-center gap-4 col-6 position-relative', {
           'mb-3': true,
           'mb-3-5': formik.errors.peopleCount && formik.touched.peopleCount,
         })}
@@ -180,7 +180,7 @@ const FormSubmit = () => {
           />
         </Form.Group>
         <p className="title text-muted">{t('form.drinks.title')}</p>
-        <Form.Group className={formClass('drinks')}>
+        <Form.Group className={formClass('drinks', 'col-lg-6')}>
           <Form.Check
             className="d-flex custom-checkbox justify-content-center"
             isInvalid={formik.errors.drinks && formik.touched.drinks}
@@ -296,7 +296,7 @@ const FormSubmit = () => {
           </div>
         </Form.Group>
         <p className="title text-muted">{t('form.allergy.title')}</p>
-        <Form.Group className={formClass('allergy', 'd-flex')}>
+        <Form.Group className={formClass('allergy', 'd-flex col-lg-6')}>
           <Form.Check
             inline
             className="position-relative col-6"

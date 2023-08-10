@@ -47,7 +47,7 @@ const Guests = db.define(
       type: DataTypes.STRING,
       defaultValue: () => {
         const date = new Date();
-        return date.toLocaleString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+        return date.toLocaleString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
       },
     },
     updatedAt: {

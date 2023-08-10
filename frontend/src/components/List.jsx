@@ -1,19 +1,14 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spinner, Badge, Table } from 'react-bootstrap';
-import { Bucket, Heart } from 'react-bootstrap-icons';
+import { Spinner, Card } from 'react-bootstrap';
+import { Bucket } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-import cn from 'classnames';
-import { fetchLoading, selectors } from '../slices/dataSlice.js';
+import { fetchLoading, selectors } from '../slices/guestSlice.js';
 import { ModalDelete } from './Modals.jsx';
-import ApiContext from './Context.jsx';
-import routes from '../routes.js';
 
-const List = ({ isMobile }) => {
+const List = () => {
   const dispatch = useDispatch();
-  const { addLike, removeLike } = useContext(ApiContext);
   const [modalShow, setModalShow] = useState(false);
   const [currentId, setDeleteId] = useState(0);
   const { t } = useTranslation();
@@ -22,21 +17,8 @@ const List = ({ isMobile }) => {
     dispatch(fetchLoading());
   }, [dispatch]);
 
-  const { loadingStatus } = useSelector((state) => state.data);
-  const data = useSelector(selectors.selectAll);
-
-  const likesHandler = async (id) => {
-    const isLike = localStorage.getItem(`guest_${id}`);
-    if (isLike) {
-      localStorage.removeItem(`guest_${id}`);
-      removeLike(id);
-      await axios.get(`${routes.removeLike}${id}`);
-    } else {
-      window.localStorage.setItem(`guest_${id}`, 'like');
-      addLike(id);
-      await axios.get(`${routes.addLike}${id}`);
-    }
-  };
+  const { loadingStatus } = useSelector((state) => state.guest);
+  const guests = useSelector(selectors.selectAll);
 
   return loadingStatus !== 'finish'
     ? (
@@ -45,103 +27,73 @@ const List = ({ isMobile }) => {
       </div>
     )
     : (
-      <>
+      <div className="container">
         <ModalDelete show={modalShow} onHide={() => setModalShow(false)} id={currentId} />
-        {data.sort((a, b) => b.id - a.id).map((guest) => {
-          const isLike = localStorage.getItem(`guest_${guest.id}`);
-          return (
-            <Table key={guest.id} className="mb-3 anim-show" striped bordered hover variant="light">
-              <thead>
-                <tr className="text-center">
-                  <th>{guest.id}</th>
-                  <th colSpan={3}>
-                    {guest.name}
-                  </th>
-                  <th>
-                    <span
-                      role="button"
-                      className="position-relative"
-                      onClick={() => likesHandler(guest.id)}
-                      onKeyDown={() => likesHandler(guest.id)}
-                      tabIndex={0}
-                      title={t('list.likes')}
-                    >
-                      <Heart className={cn('fs-3', {
-                        'text-danger': isLike,
-                        animate__heartBeat: isLike,
-                      })}
-                      />
-                      <Badge
-                        bg={cn({
-                          secondary: !isLike,
-                          danger: isLike,
-                        })}
-                        className={cn(
-                          'position-absolute top-0 start-100 translate-middle',
-                          { transition: isLike },
-                        )}
-                      >
-                        {guest.likes}
-                      </Badge>
-                      <span className="visually-hidden">{t('list.likes')}</span>
-                    </span>
-                  </th>
-                  <th>
-                    <Bucket
-                      role="button"
-                      className={cn('fs-3', {
-                        'vertical-align': isMobile,
-                      })}
-                      onClick={() => {
-                        setDeleteId(guest.id);
-                        setModalShow(true);
-                      }}
-                      title={t('list.delete')}
-                    />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td />
-                  <td>{t('list.phone')}</td>
-                  <td colSpan={4}>{guest.phone}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.foods')}</td>
-                  <td colSpan={4}>{guest.foods.join(', ')}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.alcohol')}</td>
-                  <td colSpan={4}>{guest.alcohol.join(', ')}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.transfer')}</td>
-                  <td colSpan={4}>{guest.transfer}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.children')}</td>
-                  <td colSpan={4}>{guest.children}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.beds')}</td>
-                  <td colSpan={4}>{guest.beds}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td>{t('list.date')}</td>
-                  <td colSpan={4}>{guest.createdAt}</td>
-                </tr>
-              </tbody>
-            </Table>
-          );
-        })}
-      </>
+        <h2 className="text-center h2">
+          {t('list.title')}
+        </h2>
+        {guests.sort((a, b) => b.id - a.id).map((guest) => (
+          <Card key={guest.id} className="mb-2 anim-show">
+            <Card.Body>
+              <Card.Title className="text-center fw-bold fs-6 mb-3">
+                {t('list.id')}
+                {guest.id}
+              </Card.Title>
+              <Card.Subtitle className="mb-2 fw-bold">{guest.name}</Card.Subtitle>
+              <Card.Text as="div">
+                <hr />
+                <ul>
+                  <li>{t('list.people_count', { count: guest.peopleCount })}</li>
+                  <hr />
+                  <li>{guest.children === 'Да' ? t('list.children') : t('list.not_children')}</li>
+                  <hr />
+                  <li>
+                    {t('list.drinks')}
+                    <i className="text-muted">
+                      {guest.drinks.join(', ')}
+                    </i>
+                  </li>
+                  {guest.subAllergy && (
+                  <>
+                    <hr />
+                    <li>
+                      {t('list.allergy')}
+                      <i className="text-muted">
+                        {guest.subAllergy}
+                      </i>
+                    </li>
+                  </>
+                  )}
+                  <hr />
+                  <li>
+                    {t('list.foods')}
+                    <i className="text-muted">
+                      {guest.foods}
+                    </i>
+                  </li>
+                  <hr />
+                  <li>
+                    {t('list.guest')}
+                    <i className="text-muted">
+                      {guest.guest}
+                    </i>
+                  </li>
+                </ul>
+                <hr />
+              </Card.Text>
+              <Bucket
+                role="button"
+                className="fs-3 mt-2"
+                onClick={() => {
+                  setDeleteId(guest.id);
+                  setModalShow(true);
+                }}
+                title={t('list.delete')}
+              />
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     );
 };
 

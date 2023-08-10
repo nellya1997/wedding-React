@@ -3,29 +3,23 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/too
 import routes from '../routes.js';
 
 export const fetchLoading = createAsyncThunk(
-  'data/fetchLoading',
+  'guest/fetchLoading',
   async () => {
     const res = await axios.get(routes.all);
     return res.data;
   },
 );
 
-const dataAdapter = createEntityAdapter({});
+const guestAdapter = createEntityAdapter({});
 
-const dataSlice = createSlice({
-  name: 'data',
-  initialState: dataAdapter.getInitialState({
+const guestSlice = createSlice({
+  name: 'guest',
+  initialState: guestAdapter.getInitialState({
     loadingStatus: 'idle', error: null,
   }),
   reducers: {
-    addData: dataAdapter.addOne,
-    addLike: (state, { payload }) => {
-      state.entities[payload].likes += 1;
-    },
-    removeLike: (state, { payload }) => {
-      state.entities[payload].likes -= 1;
-    },
-    removeData: dataAdapter.removeOne,
+    addGuest: guestAdapter.addOne,
+    removeGuest: guestAdapter.removeOne,
   },
   extraReducers: (builder) => {
     builder
@@ -34,7 +28,7 @@ const dataSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchLoading.fulfilled, (state, { payload }) => {
-        dataAdapter.addMany(state, payload);
+        guestAdapter.addMany(state, payload);
         state.loadingStatus = 'finish';
         state.error = null;
       })
@@ -45,6 +39,6 @@ const dataSlice = createSlice({
   },
 });
 
-export const selectors = dataAdapter.getSelectors((state) => state.data);
-export const { actions } = dataSlice;
-export default dataSlice.reducer;
+export const selectors = guestAdapter.getSelectors((state) => state.guest);
+export const { actions } = guestSlice;
+export default guestSlice.reducer;

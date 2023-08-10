@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
 import { PlusLg, DashLg } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
@@ -13,7 +13,7 @@ import routes from '../routes.js';
 
 const FormSubmit = () => {
   const notify = (text, type) => toast[type](text);
-  const { addData } = useContext(ApiContext);
+  const { addGuest } = useContext(ApiContext);
   const [modalShow, setModalShow] = useState(false);
   const [peopleCount, setPeopleCount] = useState(0);
   const peopleIncrement = () => setPeopleCount(peopleCount + 1);
@@ -31,29 +31,50 @@ const FormSubmit = () => {
       drinks: [],
       allergy: null,
       subAllergy: '',
-      foods: [],
+      foods: '',
+      guest: '',
       children: null,
     },
     validationSchema: formValidation,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        const res = await axios.post(routes.add, values);
-        if (res.status === 200) {
-          addData(res.data);
-          resetForm();
-          setModalShow(true);
-          notify(t('toast.guest_add'), 'success');
-        } else {
-          notify(t('toast.error'), 'error');
+        if (peopleCount === 0) {
+          setSubmitting(false);
+        }
+        if (values.subAllergy === 'plug') {
+          values.subAllergy = '';
+        }
+        if (!t(formik.errors.peopleCount)) {
+          const res = await axios.post(routes.add, values);
+          if (res.status === 200) {
+            notify(t('toast.guest_add'), 'success');
+            addGuest(res.data);
+            resetForm();
+            setModalShow(true);
+            setPeopleCount(0);
+          } else {
+            notify(t('toast.error'), 'error');
+          }
         }
       } catch (e) {
+        console.log(e);
         notify(t('toast.error'), 'error');
       }
     },
   });
 
-  const formClass = (field) => cn('form-floating', {
-    'mb-2': !formik.errors[field],
+  useEffect(() => {
+    formik.values.peopleCount = peopleCount;
+    if (peopleCount === 0) {
+      formik.setFieldError('peopleCount', 'Укажите количество');
+    } else {
+      formik.setFieldError('peopleCount', undefined);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values, peopleCount]);
+
+  const formClass = (field, classes = '') => cn(classes, {
+    'mb-2': true,
     'mb-3-5': formik.errors[field] && formik.touched[field],
   });
 
@@ -62,44 +83,74 @@ const FormSubmit = () => {
       <ModalSuccess show={modalShow} onHide={() => setModalShow(false)} />
       <Form
         onSubmit={formik.handleSubmit}
-        className="form-submit mx-auto col-12 col-lg-9"
+        className="form-submit mx-auto mb-5 col-12 col-lg-9"
       >
         <h2 className="text-center h2">
           {t('form.title')}
         </h2>
         <p className="text-center mb-4 fs-6">{t('form.sub_title')}</p>
-        <Form.Group className={formClass('name')} controlId="name">
-          <FloatingLabel label={t('form.name')} controlId="name">
-            <Form.Control
-              className="mb-2"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              disabled={formik.isSubmitting}
-              isInvalid={formik.errors.name && formik.touched.name}
-              onBlur={formik.handleBlur}
-              name="name"
-              placeholder={t('form.name')}
-              required
-            />
-            <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t(formik.errors.name)}
-            </Form.Control.Feedback>
-          </FloatingLabel>
-        </Form.Group>
+        <FloatingLabel label={t('form.name')} controlId="name">
+          <Form.Control
+            className="mb-4"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            disabled={formik.isSubmitting}
+            isInvalid={formik.errors.name && formik.touched.name}
+            isValid={!formik.errors.name && formik.touched.name}
+            onBlur={formik.handleBlur}
+            name="name"
+            placeholder={t('form.name')}
+            required
+          />
+          <Form.Control.Feedback type="invalid" tooltip placement="right">
+            {t(formik.errors.name)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
         <p className="mb-3 title text-muted">{t('form.people_count')}</p>
-        <div className="mb-3 d-flex justify-content-between align-items-center gap-4 col-6">
-          <PlusLg className="col-2 fs-4" aria-label="plus" role="button" tabIndex={0} onClick={peopleIncrement} onKeyDown={peopleIncrement} />
-          <span className="count-people text-muted fw-bold col-2 d-flex justify-content-center align-items-center">{peopleCount}</span>
-          <DashLg className="col-2 fs-4" aria-label="minus" role="button" tabIndex={0} onClick={peopleDecrement} onKeyDown={peopleDecrement} />
-        </div>
-        <p className="title text-muted">{t('form.children.title')}</p>
-        <Form.Group className={cn({
-          'mb-2': !formik.errors.children,
-          'mb-3-5': formik.errors.children && formik.touched.children,
+        <div className={cn('d-flex justify-content-between align-items-center gap-4 col-6 position-relative', {
+          'mb-3': true,
+          'mb-3-5': formik.errors.peopleCount && formik.touched.peopleCount,
         })}
         >
+          <PlusLg
+            className={cn('col-2 fs-4', {
+              'is-invalid': formik.errors.peopleCount && formik.touched.peopleCount,
+            })}
+            aria-label="plus"
+            role="button"
+            tabIndex={0}
+            onClick={peopleIncrement}
+            onKeyDown={peopleIncrement}
+          />
+          <span className="count-people text-muted fw-bold col-2 d-flex justify-content-center align-items-center">{peopleCount}</span>
+          <DashLg className="col-2 fs-4" aria-label="minus" role="button" tabIndex={0} onClick={peopleDecrement} onKeyDown={peopleDecrement} />
+          <Form.Control.Feedback type="invalid" tooltip placement="right">
+            {t(formik.errors.peopleCount)}
+          </Form.Control.Feedback>
+        </div>
+        <p className="mb-3 title text-muted">{t('form.guest.title')}</p>
+        <FloatingLabel className="mb-3" label={t('form.guest.example')} controlId="guest">
+          <Form.Control
+            className={formClass('guest')}
+            onChange={formik.handleChange}
+            value={formik.values.guest}
+            disabled={formik.isSubmitting}
+            isInvalid={formik.errors.guest && formik.touched.guest}
+            isValid={!formik.errors.guest && formik.touched.guest}
+            onBlur={formik.handleBlur}
+            name="guest"
+            placeholder={t('form.guest.example')}
+            required
+          />
+          <Form.Control.Feedback type="invalid" tooltip placement="right">
+            {t(formik.errors.guest)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
+        <p className="title text-muted">{t('form.children.title')}</p>
+        <Form.Group className={formClass('children')}>
           <Form.Check
             isInvalid={formik.errors.children && formik.touched.children}
+            isValid={formik.values.children === t('form.children.yes')}
             onChange={formik.handleChange}
             disabled={formik.isSubmitting}
             onBlur={formik.handleBlur}
@@ -113,6 +164,7 @@ const FormSubmit = () => {
           <Form.Check
             className="position-relative"
             isInvalid={formik.errors.children && formik.touched.children}
+            isValid={formik.values.children === t('form.children.no')}
             onChange={formik.handleChange}
             disabled={formik.isSubmitting}
             onBlur={formik.handleBlur}
@@ -128,16 +180,27 @@ const FormSubmit = () => {
           />
         </Form.Group>
         <p className="title text-muted">{t('form.drinks.title')}</p>
-        <Form.Group className={cn({
-          'mb-2': !formik.errors.drinks,
-          'mb-3-5': formik.errors.drinks && formik.touched.drinks,
-        })}
-        >
+        <Form.Group className={formClass('drinks')}>
+          <Form.Check
+            className="d-flex custom-checkbox justify-content-center"
+            isInvalid={formik.errors.drinks && formik.touched.drinks}
+            isValid={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
+            onChange={formik.handleChange}
+            disabled={formik.isSubmitting}
+            onBlur={formik.handleBlur}
+            type="checkbox"
+            id="non_alcohol"
+            name="drinks"
+            label={t('form.drinks.non_alcohol')}
+            value={t('form.drinks.non_alcohol')}
+            checked={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
+          />
           <div className="d-flex">
             <Form.Check
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.champagne'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -152,6 +215,7 @@ const FormSubmit = () => {
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.vodka'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -168,6 +232,7 @@ const FormSubmit = () => {
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.white_wine'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -182,6 +247,7 @@ const FormSubmit = () => {
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.whiskey'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -193,11 +259,12 @@ const FormSubmit = () => {
               checked={formik.values.drinks.includes(t('form.drinks.whiskey'))}
             />
           </div>
-          <div className="d-flex  position-relative">
+          <div className="d-flex position-relative">
             <Form.Check
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.red_wine'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -215,6 +282,7 @@ const FormSubmit = () => {
               className="col-6"
               inline
               isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.cognac'))}
               onChange={formik.handleChange}
               disabled={formik.isSubmitting}
               onBlur={formik.handleBlur}
@@ -228,16 +296,16 @@ const FormSubmit = () => {
           </div>
         </Form.Group>
         <p className="title text-muted">{t('form.allergy.title')}</p>
-        <Form.Group className={cn('d-flex', {
-          'mb-2': !formik.errors.allergy,
-          'mb-3-5': formik.errors.allergy && formik.touched.allergy,
-        })}
-        >
+        <Form.Group className={formClass('allergy', 'd-flex')}>
           <Form.Check
             inline
             className="position-relative col-6"
             isInvalid={formik.errors.allergy && formik.touched.allergy}
-            onChange={formik.handleChange}
+            isValid={formik.values.allergy === t('form.allergy.yes')}
+            onChange={(e) => {
+              formik.setFieldValue('subAllergy', '');
+              formik.handleChange(e);
+            }}
             disabled={formik.isSubmitting}
             onBlur={formik.handleBlur}
             type="radio"
@@ -254,7 +322,11 @@ const FormSubmit = () => {
             inline
             className="col-6"
             isInvalid={formik.errors.allergy && formik.touched.allergy}
-            onChange={formik.handleChange}
+            isValid={formik.values.allergy === t('form.allergy.no')}
+            onChange={(e) => {
+              formik.setFieldValue('subAllergy', 'plug');
+              formik.handleChange(e);
+            }}
             disabled={formik.isSubmitting}
             onBlur={formik.handleBlur}
             type="radio"
@@ -266,7 +338,7 @@ const FormSubmit = () => {
           />
         </Form.Group>
         <Form.Group
-          className={cn('form-floating', {
+          className={cn({
             'mb-2': !formik.errors.subAllergy && formik.touched.subAllergy,
             'mb-3-5': formik.errors.subAllergy && formik.touched.subAllergy,
             'd-none': formik.values.allergy !== t('form.allergy.yes'),
@@ -275,10 +347,10 @@ const FormSubmit = () => {
         >
           <FloatingLabel label={t('form.allergy.sub_title')} controlId="sub-allergy">
             <Form.Control
-              className="mb-2"
+              className={formClass('subAllergy')}
               onChange={formik.handleChange}
               value={formik.values.subAllergy}
-              isInvalid={!formik.errors.subAllergy && formik.values.allergy === t('form.allergy.yes')}
+              isInvalid={formik.errors.subAllergy && formik.touched.subAllergy}
               onBlur={formik.handleBlur}
               name="subAllergy"
               placeholder={t('form.allergy.sub_title')}
@@ -289,7 +361,25 @@ const FormSubmit = () => {
             </Form.Control.Feedback>
           </FloatingLabel>
         </Form.Group>
-        <Button variant="outline-primary" className="d-block mx-auto w-50" type="submit">{t('form.submit')}</Button>
+        <p className="mb-3 title text-muted">{t('form.foods.title')}</p>
+        <FloatingLabel className="mb-3" label={t('form.foods.example')} controlId="foods">
+          <Form.Control
+            className={formClass('foods')}
+            onChange={formik.handleChange}
+            value={formik.values.foods}
+            disabled={formik.isSubmitting}
+            isInvalid={formik.errors.foods && formik.touched.foods}
+            isValid={!formik.errors.foods && formik.touched.foods}
+            onBlur={formik.handleBlur}
+            name="foods"
+            placeholder={t('form.foods.example')}
+            required
+          />
+          <Form.Control.Feedback type="invalid" tooltip placement="right">
+            {t(formik.errors.foods)}
+          </Form.Control.Feedback>
+        </FloatingLabel>
+        <Button variant="danger" size="sm" className="d-block mx-auto w-50" type="submit">{t('form.submit')}</Button>
       </Form>
     </>
   );

@@ -4,55 +4,32 @@ import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import store from '../slices/index.js';
-import FormSubmit from './FormSubmit.jsx';
 import List from './List.jsx';
-import { actions } from '../slices/dataSlice.js';
+import { actions } from '../slices/guestSlice.js';
 import ApiContext from './Context.jsx';
-// тут ваши импорты
-
-import Header from './Header.jsx';
-import Second from './Second.jsx';
-import Programm from './Programm.jsx';
-import DressCode from './DressCode.jsx';
-import Flowers from './Flowers.jsx';
-import Footer from './Footer.jsx';
+import General from './General.jsx';
 
 const App = () => {
-  const isMobile = window.screen.width <= 768;
-
   const socket = io();
   const socketConnect = useCallback((param, arg) => socket.emit(param, arg), [socket]);
 
   const socketApi = useMemo(() => ({
-    addLike: (like) => socketConnect('addLike', like),
-    removeLike: (like) => socketConnect('removeLike', like),
-    addData: (data) => socketConnect('addData', data),
-    removeData: (data) => socketConnect('removeData', data),
+    addGuest: (guest) => socketConnect('addGuest', guest),
+    removeGuest: (guest) => socketConnect('removeGuest', guest),
   }), [socketConnect]);
 
-  socket.on('addLike', (data) => store.dispatch(actions.addLike(data)));
-  socket.on('removeLike', (data) => store.dispatch(actions.removeLike(data)));
-  socket.on('addData', (data) => store.dispatch(actions.addData(data)));
-  socket.on('removeData', (data) => store.dispatch(actions.removeData(data)));
+  socket.on('addGuest', (guest) => store.dispatch(actions.addGuest(guest)));
+  socket.on('removeGuest', (guest) => store.dispatch(actions.removeGuest(guest)));
 
   return (
     <Provider store={store}>
       <ApiContext.Provider value={socketApi}>
+        <ToastContainer />
         <BrowserRouter>
-          <ToastContainer />
-          <Header />
-          <main>
-            <Second />
-            <Programm />
-            <DressCode />
-            <Flowers />
-
-            <Routes>
-              <Route path="/" element={<FormSubmit isMobile={isMobile} />} />
-              <Route path="/list" element={<List isMobile={isMobile} />} />
-            </Routes>
-          </main>
-          <Footer />
+          <Routes>
+            <Route path="/list" element={<List />} />
+            <Route path="*" element={<General />} />
+          </Routes>
         </BrowserRouter>
       </ApiContext.Provider>
     </Provider>

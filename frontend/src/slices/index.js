@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import dataReducer from './dataSlice.js';
+import guestReducer from './guestSlice.js';
 
 export default configureStore({
   reducer: {
-    data: dataReducer,
+    guest: guestReducer,
   },
 });

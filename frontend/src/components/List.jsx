@@ -80,12 +80,19 @@ const List = () => {
                         {guest.guest}
                       </i>
                     </li>
+                    <hr />
+                    <li>
+                      {t('list.date')}
+                      <i className="text-muted">
+                        {guest.createdAt}
+                      </i>
+                    </li>
+                    <hr />
                   </ul>
-                  <hr />
                 </Card.Text>
                 <Bucket
                   role="button"
-                  className="fs-3 mt-2"
+                  className="fs-3"
                   onClick={() => {
                     setDeleteId(guest.id);
                     setModalShow(true);

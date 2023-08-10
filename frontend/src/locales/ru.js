@@ -50,7 +50,7 @@ export default {
       not_children: 'Без детей',
       children: 'С детьми',
       guest: 'Приедет с: ',
-      date: 'Дата записи',
+      date: 'Дата записи: ',
     },
     toast: {
       error: 'Произошла ошибка',

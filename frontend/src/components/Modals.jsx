@@ -10,7 +10,7 @@ import routes from '../routes.js';
 const notify = (text, type) => toast[type](text);
 
 export const ModalDelete = ({ show, onHide, id }) => {
-  const { removeData } = useContext(ApiContext);
+  const { removeGuest } = useContext(ApiContext);
   const { t } = useTranslation();
 
   const formik = useFormik({
@@ -19,7 +19,7 @@ export const ModalDelete = ({ show, onHide, id }) => {
       try {
         const res = await axios.delete(`${routes.delete}${id}`);
         if (res.status === 201) {
-          removeData(id);
+          removeGuest(id);
           onHide();
           notify(t('toast.guest_remove'), 'success');
         } else {
@@ -71,7 +71,7 @@ export const ModalSuccess = ({ show, onHide }) => {
         <p className="lead">{t('modal.success.body')}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" size="sm" onClick={onHide}>
           {t('modal.close')}
         </Button>
       </Modal.Footer>

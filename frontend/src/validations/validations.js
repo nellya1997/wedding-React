@@ -18,6 +18,9 @@ export default () => yup.object().shape({
     .required()
     .min(3)
     .max(20),
+  peopleCount: yup
+    .number()
+    .moreThan(0, 'Укажите количество'),
   children: yup
     .string()
     .nonNullable('Выберете один вариант'),
@@ -32,5 +35,17 @@ export default () => yup.object().shape({
     .trim()
     .required()
     .min(3)
-    .max(30),
+    .max(20),
+  foods: yup
+    .string()
+    .trim()
+    .required()
+    .min(3)
+    .max(20),
+  guest: yup
+    .string()
+    .trim()
+    .required()
+    .min(3)
+    .max(20),
 });

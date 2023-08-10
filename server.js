@@ -26,10 +26,8 @@ app.get('*', (req, res) => {
 io.on('connection', (socket) => {
   console.log('user connected');
 
-  socket.on('addLike', (like) => io.emit('addLike', like));
-  socket.on('removeLike', (like) => io.emit('removeLike', like));
-  socket.on('addData', (article) => io.emit('addData', article));
-  socket.on('removeData', (article) => io.emit('removeData', article));
+  socket.on('addGuest', (guest) => io.emit('addGuest', guest));
+  socket.on('removeGuest', (guest) => io.emit('removeGuest', guest));
 });
 
 server.listen(port, () => {

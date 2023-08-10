@@ -31,68 +31,71 @@ const List = () => {
         <ModalDelete show={modalShow} onHide={() => setModalShow(false)} id={currentId} />
         <h2 className="text-center h2">
           {t('list.title')}
+          {t('list.people_count', { count: guests.length })}
         </h2>
-        {guests.sort((a, b) => b.id - a.id).map((guest) => (
-          <Card key={guest.id} className="mb-2 anim-show">
-            <Card.Body>
-              <Card.Title className="text-center fw-bold fs-6 mb-3">
-                {t('list.id')}
-                {guest.id}
-              </Card.Title>
-              <Card.Subtitle className="mb-2 fw-bold">{guest.name}</Card.Subtitle>
-              <Card.Text as="div">
-                <hr />
-                <ul>
-                  <li>{t('list.people_count', { count: guest.peopleCount })}</li>
+        <div className="d-flex flex-wrap justify-content-between">
+          {guests.sort((a, b) => b.id - a.id).map((guest) => (
+            <Card key={guest.id} className="mb-2 col-12 col-lg-5 anim-show">
+              <Card.Body>
+                <Card.Title className="text-center fw-bold fs-6 mb-3">
+                  {t('list.id')}
+                  {guest.id}
+                </Card.Title>
+                <Card.Subtitle className="mb-2 fw-bold">{guest.name}</Card.Subtitle>
+                <Card.Text as="div">
                   <hr />
-                  <li>{guest.children === 'Да' ? t('list.children') : t('list.not_children')}</li>
-                  <hr />
-                  <li>
-                    {t('list.drinks')}
-                    <i className="text-muted">
-                      {guest.drinks.join(', ')}
-                    </i>
-                  </li>
-                  {guest.subAllergy && (
-                  <>
+                  <ul>
+                    <li>{t('list.people_count', { count: guest.peopleCount })}</li>
+                    <hr />
+                    <li>{guest.children === 'Да' ? t('list.children') : t('list.not_children')}</li>
                     <hr />
                     <li>
-                      {t('list.allergy')}
+                      {t('list.drinks')}
                       <i className="text-muted">
-                        {guest.subAllergy}
+                        {guest.drinks.join(', ')}
                       </i>
                     </li>
-                  </>
-                  )}
+                    {guest.subAllergy && (
+                    <>
+                      <hr />
+                      <li>
+                        {t('list.allergy')}
+                        <i className="text-muted">
+                          {guest.subAllergy}
+                        </i>
+                      </li>
+                    </>
+                    )}
+                    <hr />
+                    <li>
+                      {t('list.foods')}
+                      <i className="text-muted">
+                        {guest.foods}
+                      </i>
+                    </li>
+                    <hr />
+                    <li>
+                      {t('list.guest')}
+                      <i className="text-muted">
+                        {guest.guest}
+                      </i>
+                    </li>
+                  </ul>
                   <hr />
-                  <li>
-                    {t('list.foods')}
-                    <i className="text-muted">
-                      {guest.foods}
-                    </i>
-                  </li>
-                  <hr />
-                  <li>
-                    {t('list.guest')}
-                    <i className="text-muted">
-                      {guest.guest}
-                    </i>
-                  </li>
-                </ul>
-                <hr />
-              </Card.Text>
-              <Bucket
-                role="button"
-                className="fs-3 mt-2"
-                onClick={() => {
-                  setDeleteId(guest.id);
-                  setModalShow(true);
-                }}
-                title={t('list.delete')}
-              />
-            </Card.Body>
-          </Card>
-        ))}
+                </Card.Text>
+                <Bucket
+                  role="button"
+                  className="fs-3 mt-2"
+                  onClick={() => {
+                    setDeleteId(guest.id);
+                    setModalShow(true);
+                  }}
+                  title={t('list.delete')}
+                />
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
       </div>
     );
 };

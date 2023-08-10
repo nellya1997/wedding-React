@@ -37,7 +37,7 @@ export default {
       },
     },
     list: {
-      title: 'Список гостей',
+      title: 'Список гостей: ',
       id: 'Гость № ',
       people_count_zero: '{{count}} человек',
       people_count_one: '{{count}} человек',

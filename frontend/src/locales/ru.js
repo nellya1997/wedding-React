@@ -46,10 +46,11 @@ export default {
       delete: 'Удаление гостя',
       foods: 'Не любит кушать: ',
       drinks: 'Предпочитает: ',
-      allergy: 'Аллергия на: ',
+      allergy: 'Аллергия: ',
       not_children: 'Без детей',
+      not_alcohol: 'Не пьёт алкоголь',
       children: 'С детьми',
-      guest: 'Приедет с: ',
+      guest: 'Приедет: ',
       date: 'Дата записи: ',
     },
     toast: {

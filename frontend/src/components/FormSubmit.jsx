@@ -84,6 +84,7 @@ const FormSubmit = () => {
       <Form
         onSubmit={formik.handleSubmit}
         className="form-submit mx-auto mb-5 col-12 col-lg-9"
+        id="form"
       >
         <h2 className="text-center h2">
           {t('form.title')}
@@ -100,14 +101,13 @@ const FormSubmit = () => {
             onBlur={formik.handleBlur}
             name="name"
             placeholder={t('form.name')}
-            required
           />
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {t(formik.errors.name)}
           </Form.Control.Feedback>
         </FloatingLabel>
         <p className="mb-3 title text-muted">{t('form.people_count')}</p>
-        <div className={cn('d-flex col-lg-4 justify-content-between align-items-center gap-4 col-6 position-relative', {
+        <div className={cn('d-flex col-7 col-lg-4 justify-content-between align-items-center gap-4 position-relative', {
           'mb-3': true,
           'mb-3-5': formik.errors.peopleCount && formik.touched.peopleCount,
         })}
@@ -140,7 +140,6 @@ const FormSubmit = () => {
             onBlur={formik.handleBlur}
             name="guest"
             placeholder={t('form.guest.example')}
-            required
           />
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {t(formik.errors.guest)}
@@ -181,20 +180,6 @@ const FormSubmit = () => {
         </Form.Group>
         <p className="title text-muted">{t('form.drinks.title')}</p>
         <Form.Group className={formClass('drinks', 'col-lg-6')}>
-          <Form.Check
-            className="d-flex custom-checkbox justify-content-center"
-            isInvalid={formik.errors.drinks && formik.touched.drinks}
-            isValid={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
-            onChange={formik.handleChange}
-            disabled={formik.isSubmitting}
-            onBlur={formik.handleBlur}
-            type="checkbox"
-            id="non_alcohol"
-            name="drinks"
-            label={t('form.drinks.non_alcohol')}
-            value={t('form.drinks.non_alcohol')}
-            checked={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
-          />
           <div className="d-flex">
             <Form.Check
               className="col-6"
@@ -259,7 +244,7 @@ const FormSubmit = () => {
               checked={formik.values.drinks.includes(t('form.drinks.whiskey'))}
             />
           </div>
-          <div className="d-flex position-relative">
+          <div className="d-flex">
             <Form.Check
               className="col-6"
               inline
@@ -274,9 +259,6 @@ const FormSubmit = () => {
               label={t('form.drinks.red_wine')}
               value={t('form.drinks.red_wine')}
               checked={formik.values.drinks.includes(t('form.drinks.red_wine'))}
-              feedbackTooltip
-              feedbackType="invalid"
-              feedback={t(formik.errors.drinks)}
             />
             <Form.Check
               className="col-6"
@@ -292,6 +274,26 @@ const FormSubmit = () => {
               label={t('form.drinks.cognac')}
               value={t('form.drinks.cognac')}
               checked={formik.values.drinks.includes(t('form.drinks.cognac'))}
+            />
+          </div>
+          <div className="position-relative">
+            <Form.Check
+              className="col-12"
+              inline
+              isInvalid={formik.errors.drinks && formik.touched.drinks}
+              isValid={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
+              onChange={formik.handleChange}
+              disabled={formik.isSubmitting}
+              onBlur={formik.handleBlur}
+              type="checkbox"
+              id="non_alcohol"
+              name="drinks"
+              label={t('form.drinks.non_alcohol')}
+              value={t('form.drinks.non_alcohol')}
+              checked={formik.values.drinks.includes(t('form.drinks.non_alcohol'))}
+              feedbackTooltip
+              feedbackType="invalid"
+              feedback={t(formik.errors.drinks)}
             />
           </div>
         </Form.Group>
@@ -373,7 +375,6 @@ const FormSubmit = () => {
             onBlur={formik.handleBlur}
             name="foods"
             placeholder={t('form.foods.example')}
-            required
           />
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {t(formik.errors.foods)}

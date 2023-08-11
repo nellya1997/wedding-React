@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spinner, Card } from 'react-bootstrap';
@@ -50,10 +49,14 @@ const List = () => {
                     <li>{guest.children === 'Да' ? t('list.children') : t('list.not_children')}</li>
                     <hr />
                     <li>
-                      {t('list.drinks')}
+                      {guest.drinks.length === 1 && guest.drinks[0] === 'Не пью алкоголь'
+                        ? t('list.not_alcohol')
+                        : t('list.drinks')}
+                      {guest.drinks.length !== 1 && guest.drinks[0] !== 'Не пью алкоголь' && (
                       <i className="text-muted">
                         {guest.drinks.join(', ')}
                       </i>
+                      )}
                     </li>
                     {guest.subAllergy && (
                     <>

@@ -40,7 +40,14 @@ const List = () => {
                   {t('list.id')}
                   {guest.id}
                 </Card.Title>
-                <Card.Subtitle className="mb-2 fw-bold">{guest.name}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 fw-bold">
+                  {guest.name
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .split(' ')
+                    .map((name) => name.replace(name[0], name[0].toUpperCase()))
+                    .join(' ')}
+                </Card.Subtitle>
                 <Card.Text as="div">
                   <hr />
                   <ul>
@@ -52,7 +59,7 @@ const List = () => {
                       {guest.drinks.length === 1 && guest.drinks[0] === 'Не пью алкоголь'
                         ? t('list.not_alcohol')
                         : t('list.drinks')}
-                      {guest.drinks.length !== 1 && guest.drinks[0] !== 'Не пью алкоголь' && (
+                      {guest.drinks.length > 0 && guest.drinks.legth !== 1 && guest.drinks[0] !== 'Не пью алкоголь' && (
                       <i className="text-muted">
                         {guest.drinks.join(', ')}
                       </i>

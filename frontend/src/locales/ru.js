@@ -39,6 +39,10 @@ export default {
     list: {
       title: 'Список гостей: ',
       id: 'Гость № ',
+      applications_count_zero: '{{count}} анкет, ',
+      applications_count_one: '{{count}} анкета, ',
+      applications_count_few: '{{count}} анкеты, ',
+      applications_count_many: '{{count}} анкет, ',
       people_count_zero: '{{count}} человек',
       people_count_one: '{{count}} человек',
       people_count_few: '{{count}} человека',

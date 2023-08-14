@@ -30,7 +30,13 @@ const List = () => {
         <ModalDelete show={modalShow} onHide={() => setModalShow(false)} id={currentId} />
         <h2 className="text-center h2">
           {t('list.title')}
-          {t('list.people_count', { count: guests.length })}
+          {t('list.applications_count', { count: guests.length })}
+          {t('list.people_count', {
+            count: guests.reduce((acc, guest) => {
+              acc += guest.peopleCount;
+              return acc;
+            }, 0),
+          })}
         </h2>
         <div className="d-flex flex-wrap justify-content-between">
           {guests.sort((a, b) => b.id - a.id).map((guest) => (

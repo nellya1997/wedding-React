@@ -41,5 +41,4 @@ rules:
     }]
   no-param-reassign: [2, { 
       "props": false,
-      "ignorePropertyModificationsFor": ["acc"]
     }]

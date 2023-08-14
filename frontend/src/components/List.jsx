@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spinner, Card } from 'react-bootstrap';

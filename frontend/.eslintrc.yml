@@ -40,5 +40,6 @@ rules:
       "depth": 3,
     }]
   no-param-reassign: [2, { 
-      "props": false
+      "props": false,
+      "ignorePropertyModificationsFor": ["acc"]
     }]

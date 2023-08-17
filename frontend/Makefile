@@ -1,5 +1,5 @@
 install:
-	npm ci & npm -C backend ci
+	npm i & npm -C backend i
 
 lint:
 	npx eslint .

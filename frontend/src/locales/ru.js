@@ -37,6 +37,7 @@ export default {
       },
     },
     list: {
+      helmetTitle: 'Список гостей',
       title: 'Список гостей: ',
       id: 'Гость № ',
       applications_count_zero: '{{count}} анкет, ',

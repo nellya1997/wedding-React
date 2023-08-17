@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spinner, Card } from 'react-bootstrap';
+import { Helmet } from 'react-helmet';
 import { Bucket } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { fetchLoading, selectors } from '../slices/guestSlice.js';
@@ -17,10 +18,10 @@ const List = () => {
     dispatch(fetchLoading());
   }, [dispatch]);
 
-  const { loadingStatus } = useSelector((state) => state.guest);
-  const guests = useSelector(selectors.selectAll);
+  const { loadingStatus, error } = useSelector((state) => state.guest);
+  const guests = useSelector(selectors.selectAll) ?? null;
 
-  return loadingStatus !== 'finish'
+  return loadingStatus !== 'finish' && !error
     ? (
       <div className="vh-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" role="status" />
@@ -28,6 +29,11 @@ const List = () => {
     )
     : (
       <div className="container">
+        <Helmet>
+          <title>{t('list.helmetTitle')}</title>
+          <meta name="description" content={t('list.helmetTitle')} />
+          <link rel="canonical" href={window.location.href} />
+        </Helmet>
         <ModalDelete show={modalShow} onHide={() => setModalShow(false)} id={currentId} />
         <h2 className="text-center h2">
           {t('list.title')}
@@ -40,7 +46,7 @@ const List = () => {
           })}
         </h2>
         <div className="d-flex flex-wrap justify-content-between">
-          {guests.sort((a, b) => b.id - a.id).map((guest) => (
+          {!error && guests.sort((a, b) => b.id - a.id).map((guest) => (
             <Card key={guest.id} className="mb-2 col-12 col-lg-5 anim-show">
               <Card.Body>
                 <Card.Title className="text-center fw-bold fs-6 mb-3">
